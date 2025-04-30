@@ -8,7 +8,7 @@ const Auto_comp = ({ onSelect }) => {
   const [input, setInput] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const autocompleteRef = useRef(null);
-  const API_KEY = 'MdsBLQtub1D2n4KEMKHXyHggjA89vCj0RIJbx2YH'; // Replace with your actual API key
+  const API_KEY = ''; // Replace with your actual API key
   const API_URL = `https://api.olamaps.io/places/v1/autocomplete`;
 
   // Function to fetch autocomplete suggestions
