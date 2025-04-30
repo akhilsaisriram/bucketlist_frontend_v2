@@ -19,9 +19,9 @@ const Map = ({ payload }) => {
       style: "https://api.olamaps.io/tiles/vector/v1/styles/default-light-standard/style.json",
       transformRequest: (url, resourceType) => {
         if (!url.includes('?')) {
-          url += "?api_key=MdsBLQtub1D2n4KEMKHXyHggjA89vCj0RIJbx2YH";
+          url += "?api_key=";
         } else {
-          url += "&api_key=MdsBLQtub1D2n4KEMKHXyHggjA89vCj0RIJbx2YH";
+          url += "&api_key=";
         }
         return { url, resourceType };
       },
