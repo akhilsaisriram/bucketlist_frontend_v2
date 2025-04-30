@@ -8,12 +8,7 @@
 // const auth =firebase.auth();
 
 // const firebaseConfig = {
-//   apiKey: "AIzaSyDSNQnibOlFmbeUozrt9MClO4LdYtunMms",
-//   authDomain: "btpf-fdea3.firebaseapp.com",
-//   projectId: "btpf-fdea3",
-//   storageBucket: "btpf-fdea3.appspot.com",
-//   messagingSenderId: "868845433595",
-//   appId: "1:868845433595:web:beadde7cced504c521765e"
+
 // };
 
 // // Initialize Firebase
@@ -29,12 +24,12 @@ import 'firebase/compat/firestore';
 
 
 const firebaseConfig = {
-     apiKey: "AIzaSyDSNQnibOlFmbeUozrt9MClO4LdYtunMms",
-     authDomain: "btpf-fdea3.firebaseapp.com",
-     projectId: "btpf-fdea3",
-     storageBucket: "btpf-fdea3.appspot.com",
-     messagingSenderId: "868845433595",
-     appId: "1:868845433595:web:beadde7cced504c521765e"
+     apiKey: "",
+     authDomain: "b.com",
+     projectId: "",
+     storageBucket: "",
+     messagingSenderId: "",
+     appId: ""
    };
  // Initialize Firebase
  firebase.initializeApp(firebaseConfig);
