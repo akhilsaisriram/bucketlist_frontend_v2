@@ -4,13 +4,16 @@ import axios from 'axios';
 import { Input } from "antd";
 import './Test.css';
 
-const Auto_comp = ({ onSelect }) => {
-  const [input, setInput] = useState('');
+const Auto_comp = ({ onSelect ,initialText = ''}) => {
+  const [input, setInput] = useState(initialText);
   const [suggestions, setSuggestions] = useState([]);
   const autocompleteRef = useRef(null);
   const API_KEY = 'MdsBLQtub1D2n4KEMKHXyHggjA89vCj0RIJbx2YH'; // Replace with your actual API key
   const API_URL = `https://api.olamaps.io/places/v1/autocomplete`;
-
+  useEffect(() => {
+    setInput(initialText);
+    if (initialText) fetchSuggestions(initialText);
+  }, [initialText]);
   // Function to fetch autocomplete suggestions
   const fetchSuggestions = async (query) => {
     try {
@@ -71,12 +74,12 @@ const Auto_comp = ({ onSelect }) => {
         className="autocomplete-input"
       />
       {suggestions.length > 0 && (
-        <ul className="autocomplete-suggestions">
+        <ul className="autocomplete-suggestions w-full">
           {suggestions.map((suggestion) => (
             <li
               key={suggestion.place_id}
               onClick={() => handleSelect(suggestion)}
-              className="autocomplete-suggestion"
+              className="autocomplete-suggestion w-full"
             >
               {suggestion.description}
             </li>

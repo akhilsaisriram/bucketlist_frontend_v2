@@ -397,9 +397,9 @@ const GroupMembers = ({ selected_bucket = {} }) => {
   const handleCloseSettings = () => setOpenSettings(false);
 
   return (
-    <div className="flex flex-col md:flex-row h-full w-full overflow-hidden">
+    <div className="flex flex-col md:flex-row h-full w-full overflow-hidden gap-1">
       {/* Sidebar */}
-      <div className="flex flex-col items-center justify-start w-full md:w-[40%] lg:w-[25%] xl:w-[30%] h-full bg-white/50 border rounded-3xl p-4">
+      <div className="flex flex-col items-center justify-start w-full md:w-[40%] lg:w-[25%] xl:w-[35%] h-full bg-white/50 border rounded-3xl p-4">
         {/* Header */}
         <div className="flex flex-row items-center justify-between w-full mb-2">
           <Input

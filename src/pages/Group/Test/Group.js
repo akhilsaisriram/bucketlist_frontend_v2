@@ -26,14 +26,11 @@ import GroupSidebar from "./GroupSidebar";
 
 export default function Group() {
   const [activeButton, setActiveButton] = useState(null);
-  const [tooltipText, setTooltipText] = useState("Hover over a button!"); // Default tooltip text
-
-  const handleButtonClick = (buttonId) => {
-    setActiveButton(buttonId);
-  };
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredGroups, setFilteredGroups] = useState([]);
+  const [showAutoComp, setShowAutoComp] = useState(false);
+
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -55,7 +52,6 @@ export default function Group() {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     if (e.target) {
@@ -163,30 +159,6 @@ export default function Group() {
       // console.log("aa", polyline);
       dispatch(setPolyline(polyline));
       setsel_bucket({ ocord, dcord, radius, polyline });
-      // try {
-      //   const token = sessionStorage.getItem("token");
-      //   const headers = {
-      //     Authorization: `Bearer ${token}`, // Include token in header
-      //   };
-      //
-      //   const response = await axios.post(
-      //     `${window._env_.REACT_APP_BASE_URL}/bucketlist/nearby/`,
-      //     { ocord, dcord, radius, polyline }, // Send ocord, dcord, and radius
-      //     { headers } // Include headers in the request
-      //   );
-
-      //   const bucketpeole = response.data.bucket;
-      //   const bucketfeed = response.data.feed;
-
-      //   dispatch(setbucket(bucketpeole));
-      //   dispatch(setfeed(bucketfeed));
-
-      //   // console.log("mem", bucketfeed);
-      //   dispatch(setLoading(false));
-      //   console.log(bucketpeole);
-      // } catch (e) {
-      //   console.log(e);
-      // }
     } catch (e) {
       console.log(e);
     }
@@ -243,22 +215,142 @@ export default function Group() {
         group.destination.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredGroups(filtered);
+
+    if (searchTerm.length > 2 && filtered.length === 0) {
+      setShowAutoComp(true);
+    } else {
+      setShowAutoComp(false);
+    }
   }, [searchTerm, top100Films]);
+
+
+  const [communityData, setCommunityData] = useState({
+    name: "",
+    lat: null,
+    lng: null,
+  });
+  const handleCommunitySelect = (name, { lat, lng }) => {
+    setCommunityData({ name, lat, lng });
+    setShowAutoComp(false);
+    console.log(communityData);
+    
+    setSearchTerm("");
+  };
 
   return (
     <div className="p-3 w-full flex flex-col">
-      <div className="flex flex-col lg:flex-row w-full gap-2">
-        <GroupSidebar
-          activeButton={activeButton}
-          setActiveButton={setActiveButton}
-          handleOpen={handleOpen}
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-          filteredGroups={filteredGroups}
-          handleAutocompleteSelect={handleAutocompleteSelect}
-        />
 
-        {/* Main Content */}
+      <div className="flex flex-col lg:flex-row w-full gap-2 ">
+        <div
+          className={`pt-2 lg:h-[96vh] w-full ${
+            showAutoComp ? "lg:w-[28%]" : "lg:w-[8%]"
+          } bg-white/50 border rounded-3xl flex flex-row lg:flex-col items-center justify-start text-center overflow-x-auto lg:overflow-y-auto`}
+        >
+          {" "}
+          <div className=" w-full flex lg:gap-3 gap-1 flex-row lg:flex-col items-center justify-start text-center px-2">
+            <IconButton
+              className={`w-14 h-14 rounded-full transition-colors duration-300 ${
+                activeButton === 2 ? "bg-blue-500 text-white" : "bg-gray-200"
+              }`}
+              onClick={handleOpen}
+            >
+              <AddIcon size={50} />
+            </IconButton>
+
+            <div className="w-full flex flex-col items-center">
+              {showAutoComp ? (
+                <div className="w-full">
+                  <div className="w-full">
+                    <Auto_comp
+                      onSelect={(selected, loc) => {
+                        handleCommunitySelect(selected, { lat: loc.lat, lng: loc.lng });
+                        // handleSelect("origin", selected);
+                        // handleSelect("olat", loc.lat);
+                        // handleSelect("olon", loc.lng);
+                        // setShowAutoComp(false);
+                        // setSearchTerm(""); // Clear the input
+                      }}
+                      initialText={searchTerm}
+                    />
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        setShowAutoComp(false);
+                        setSearchTerm("");
+                      }}
+                      className="text-blue-500 mt-1"
+                    >
+                      Back to Search
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <Input
+                  placeholder="Search..."
+                  className="w-32 lg:w-4/5"
+                  value={searchTerm}
+                  onChange={(e) => {
+                    const term = e.target.value;
+                    setSearchTerm(term);
+                    const filtered = top100Films.filter(
+                      (group) =>
+                        group.name.toLowerCase().includes(term.toLowerCase()) ||
+                        group.origin
+                          .toLowerCase()
+                          .includes(term.toLowerCase()) ||
+                        group.destination
+                          .toLowerCase()
+                          .includes(term.toLowerCase())
+                    );
+                    setFilteredGroups(filtered);
+                    setShowAutoComp(term.length > 2 && filtered.length === 0);
+                  }}
+                />
+              )}
+            </div>
+
+            {filteredGroups.map((group, index) => (
+              <Tooltip
+                key={group.id || index}
+                title={
+                  <div className="text-sm text-white p-2">
+                    <div className="font-bold text-lg">{group.name}</div>
+                    <div>
+                      <b>Origin:</b> {group.origin}
+                    </div>
+                    <div>
+                      <b>Destination:</b> {group.destination}
+                    </div>
+                    <div>
+                      <b>Start Date:</b> {group.startDate}
+                    </div>
+                    <div>
+                      <b>End Date:</b> {group.endDate}
+                    </div>
+                  </div>
+                }
+                placement="top"
+              >
+                <Button
+                  className={`w-12 h-12 rounded-full text-lg mb-2 flex items-center justify-center transition-colors duration-300 ${
+                    activeButton === group.id
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-200"
+                  }`}
+                  onClick={() => {
+                    setActiveButton(group.id);
+                    handleAutocompleteSelect(group);
+                  }}
+                >
+                  {group?.name
+                    ? group.name.substring(0, 2).toUpperCase()
+                    : "NA"}
+                </Button>
+              </Tooltip>
+            ))}
+          </div>
+        </div>
+
         <div className="flex flex-1 w-full h-[96vh]">
           <GroupMembers selected_bucket={selected_bucket} />
         </div>

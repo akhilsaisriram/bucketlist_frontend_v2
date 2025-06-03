@@ -92,7 +92,7 @@ const Home = () => {
     navigate("/Login"); // Navigate to '/otherpage'
   };
   return (
-    <div>
+    <div >
       <div
         className="bg-cover bg-center text-white"
         style={{ backgroundImage: `url(${bb})` }}
@@ -532,7 +532,8 @@ const Home = () => {
         </div>
         <br></br>
       </div>
-      <div><footer class="footer">
+      <div>
+        {/* <footer class="footer">
           <div class="container-fluid">
             <center>
               <h1 class="bodyhead" style={gradientBackground}>
@@ -561,7 +562,6 @@ const Home = () => {
                   <InstagramOutlined style={{ fontSize: 40 }} />
                   <LinkedinOutlined style={{ fontSize: 40 }} />
                   <GithubOutlined style={{ fontSize: 40 }} />
-                  {/* <IconFont type="icon-facebook" style={{ fontSize: 40 }} /> */}
 
                   <TwitterOutlined style={{ fontSize: 40 }} />
                 </Space>
@@ -709,7 +709,8 @@ const Home = () => {
             {" "}
             <p>&copy;IT ride | All Rights Reserved</p>
           </center>
-        </footer></div>
+        </footer> */}
+        </div>
     </div>
   );
 };
